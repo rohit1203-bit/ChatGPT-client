@@ -3,9 +3,12 @@ const {
   registerContoller,
   loginController,
   logoutController,
+  getuserId
 } = require("../controllers/authController");
 
 const router = express.Router();
+
+router.get("/", getuserId);
 
 router.post("/register", registerContoller);
 
