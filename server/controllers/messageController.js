@@ -7,7 +7,9 @@ const messageModel = require("../models/messageModel");
 dotenv.config();
 exports.deletemessageController = async (req, res) => {
     try{
-        const{ messageId, userId } = req.body;
+        const{ messageId, token } = req.body;
+        var decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+        const userId = decoded.id;
         const user = await userModel.findById(userId);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
@@ -39,7 +41,7 @@ exports.deletemessageController = async (req, res) => {
 };
 exports.getmessagesController = async (req, res) => {
     try{
-        const{ textinput, token } = req.body;
+        const{ token } = req.body;
         var decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
         const userId = decoded.id;
         const user = await userModel.findById(userId);
@@ -59,7 +61,7 @@ exports.getmessagesController = async (req, res) => {
         if (!messages) {
             return res.status(404).json({ message: 'No messages found for this user' });
         }
-        res.status(200).json(messages);
+        res.status(200).json({messages});
 
     } catch(err){
         console.log(err);

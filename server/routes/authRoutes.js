@@ -9,11 +9,8 @@ const {
 const router = express.Router();
 
 router.get("/", getuserId);
-
 router.post("/register", registerContoller);
-
 router.post("/login", loginController);
-
 router.post("/logout", logoutController);
 
 

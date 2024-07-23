@@ -2,6 +2,7 @@ const errorHandler = require("../middlewares/errorMiddleware");
 const jwt = require('jsonwebtoken');
 const userModel = require("../models/userModel");
 const errorResponse = require("../utils/errorResponse");
+const cookieParser = require('cookie-parser');
 
 exports.sendToken = (user, statusCode, res) => {
   // const token = user.getSignedToken(res); 
@@ -10,8 +11,6 @@ exports.sendToken = (user, statusCode, res) => {
   //   success: true,
   //   token,
   // });
-
-
 
 };
 const maxAge = 3 * 24 * 60 * 60;
@@ -50,6 +49,7 @@ exports.registerContoller = async (req, res, next) => {
     }
     const user = await userModel.create({ username, email, password });
     const token = createToken(user._id);
+    res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
     res.status(201).json({ token });
     // res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
     // res.status(201).json({ user: user._id });
@@ -75,6 +75,7 @@ exports.loginController = async (req, res, next) => {
       return next(new errorResponse("Invalid Credentials", 401));
     }
     const token = createToken(user._id);
+    res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
     res.status(201).json({ token });
     // res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
     // res.status(200).json({ user: user._id });
@@ -86,7 +87,7 @@ exports.loginController = async (req, res, next) => {
 };
 
 exports.logoutController = async (req, res) => {
-  // res.clearCookie("refreshToken");
+  res.cookie("jwt", "", { maxAge: 1 });
   return res.status(200).json({
     success: true,
     message: "Logged out Succesfully",
