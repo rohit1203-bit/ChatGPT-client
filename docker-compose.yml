@@ -1,0 +1,141 @@
+# services:
+#   server:
+#     build:
+#       context: ./server
+#       dockerfile: Dockerfile
+#     container_name: backend
+#     ports:
+#       - "5000:5000"
+#     env_file: ./.env
+#     environment:
+#       - DB_HOST=mongodb_server
+#       - DB_USER=$MONGODB_USER
+#       - DB_PASSWORD=$MONGODB_PASSWORD
+#       - DB_NAME=$MONGODB_DATABASE
+#       - DB_PORT=$MONGODB_DOCKER_PORT
+#     depends_on:
+#       - mongodb
+
+#   client:
+#     build:
+#       context: ./client
+#       dockerfile: Dockerfile
+
+#     container_name: frontend
+#     ports:
+#       - "80:80"
+#     depends_on:
+#       - server
+
+#   # Database service
+#   mongodb:
+#     image: mongo:latest
+#     container_name: mongodb_server
+
+#     env_file: ./.env
+#     environment:
+#       - MONGO_INITDB_ROOT_USERNAME=$MONGODB_USER
+#       - MONGO_INITDB_ROOT_PASSWORD=$MONGODB_PASSWORD
+
+#     ports:
+#       - "27017:27017"
+
+#     volumes:
+#       - ./../mydata:/data/db
+
+# # Volumes define
+# volumes: 
+#   mydata:
+
+
+
+
+
+
+
+
+
+
+
+
+
+services: 
+  server:
+    container_name: mern_app
+    restart: always
+    build: ./server
+    ports:
+      - "8083:8083"
+    environment:
+      MONGO_URL : mongodb://0.0.0.0:27017/chatUsers
+      JWT_ACCESS_SECRET : rohit12345
+    depends_on:
+      - mongo
+  client: 
+    container_name: mern_client
+    restart: always
+    build: ./client
+    ports:
+      - "3000:3000"
+    links: 
+      - server
+  mongo:
+    container_name: mongo
+    image: mongo
+    restart: always
+    expose:
+      - "27017"
+    volumes:
+      - ./data:/data/db
+    ports:
+      - "27017:27017"
+
+
+
+
+# services: 
+#   server:
+#     container_name: mern_app
+#     restart: always
+#     build: ./server
+#     ports:
+#       - "8083:8083"
+#     environment:
+#       - MONGO_URI=mongodb://0.0.0.0:27017/chatUsers
+#     depends_on:
+#       - mongo
+#     networks:
+#       - mern-network
+
+#   client: 
+#     container_name: mern_client
+#     restart: always
+#     build: ./client
+#     ports:
+#       - "3032:3000"
+#     links: 
+#       - server
+#     networks:
+#       - mern-network
+
+#   mongo:
+#     container_name: mongo
+#     image: mongo:latest
+#     restart: always
+#     expose:
+#       - "27017"
+#     # volumes:
+#     #   - ./data:/data/db
+#     volumes:
+#       - mongo_data:/data/db
+#     ports:
+#       - "27017:27017"
+#     networks:
+#       - mern-network
+
+# networks:
+#   mern-network:
+#     driver: bridge
+
+# volumes:
+#   mongo_data:

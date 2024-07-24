@@ -38,7 +38,6 @@ const Chat = () => {
 
   useEffect(() => {
     const messageHistory = async () => {
-      // e.preventDefault();
       try{
         const authToken = JSON.parse(localStorage.getItem('authToken'));
         console.log(authToken);

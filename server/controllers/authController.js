@@ -4,15 +4,15 @@ const userModel = require("../models/userModel");
 const errorResponse = require("../utils/errorResponse");
 // const cookieParser = require('cookie-parser');
 
-exports.sendToken = (user, statusCode, res) => {
-  // const token = user.getSignedToken(res); 
-  // const token = jwt.sign({ user }, process.env.JWT_ACCESS_SECRET, { expiresIn: process.env.JWT_ACCESS_EXPIREIN });
-  // res.status(statusCode).json({
-  //   success: true,
-  //   token,
-  // });
+// exports.sendToken = (user, statusCode, res) => {
+//   // const token = user.getSignedToken(res); 
+//   // const token = jwt.sign({ user }, process.env.JWT_ACCESS_SECRET, { expiresIn: process.env.JWT_ACCESS_EXPIREIN });
+//   // res.status(statusCode).json({
+//   //   success: true,
+//   //   token,
+//   // });
 
-};
+// };
 const maxAge = 3 * 24 * 60 * 60;
 const createToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_ACCESS_SECRET, {
