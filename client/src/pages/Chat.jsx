@@ -75,7 +75,7 @@ const Chat = () => {
       }
     };
     messageHistory();
-  }, []); 
+  }, [response]); 
   
   // const email=JSON.parse(localStorage.getItem("email"));
 
@@ -122,7 +122,7 @@ const Chat = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = JSON.parse(localStorage.getItem("authToken"));
+      // const token = JSON.parse(localStorage.getItem("authToken"));
       // if (token) {
         // const user = getuserIdFromToken(token);
         // setUserId(user);
@@ -130,9 +130,20 @@ const Chat = () => {
       // setEmail("abc");
       // const {userId} = await axios.get("http://localhost:8083/api/v1/auth", {email});
       // localStorage.setItem('userID', JSON.stringify(userId));
-      const { data } = await axios.post("http://localhost:8083/api/v1/chat", { textinput, token });
+      const authToken = JSON.parse(localStorage.getItem('authToken'));
+        console.log(authToken);
+        const {data} = await axios.post('http://localhost:8083/api/v1/chat', {
+            textinput
+        }, {
+        headers: {
+          'Authorization': `Bearer ${authToken}`
+        }
+        });
+      // const { data } = await axios.post("http://localhost:8083/api/v1/chat", { textinput, token });
       console.log(data);
       setResponse(data);
+      // setpreviousmessages(...previousmessages, data.result);
+      // window.location='/chat';
     } catch (err) {
       console.log(error);
       setError(err.message);

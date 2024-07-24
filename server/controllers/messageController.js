@@ -60,7 +60,7 @@ exports.getmessagesController = async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        const messages = await messageModel.find({ userId });
+        const messages = await messageModel.find({ userId }).sort({ _id: -1 }).limit(10);
 
         if (!messages) {
             return res.status(404).json({ message: 'No messages found for this user' });
@@ -68,6 +68,7 @@ exports.getmessagesController = async (req, res) => {
         // const textinput = messages[0].textinput;
         // const textresult = messages[0].textresult;
         // res.status(200).json({ textinput, textresult });
+
         res.status(200).json({messages});
 
     } catch(err){
@@ -79,7 +80,13 @@ exports.getmessagesController = async (req, res) => {
 };
 exports.chatController = async (req, res) => {
     try{
-        const{ textinput, token } = req.body;
+        const{ textinput } = req.body;
+        console.log(textinput);
+        const authToken = req.headers.authorization;
+        console.log(req.body);
+        console.log(authToken);
+        const token = authToken && authToken.split(' ')[1];
+        console.log(token);
         var decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
         const userId = decoded.id;
         const textresult = textinput;

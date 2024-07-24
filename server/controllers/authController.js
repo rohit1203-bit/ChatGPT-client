@@ -1,8 +1,8 @@
-const errorHandler = require("../middlewares/errorMiddleware");
+// const errorHandler = require("../middlewares/errorMiddleware");
 const jwt = require('jsonwebtoken');
 const userModel = require("../models/userModel");
 const errorResponse = require("../utils/errorResponse");
-const cookieParser = require('cookie-parser');
+// const cookieParser = require('cookie-parser');
 
 exports.sendToken = (user, statusCode, res) => {
   // const token = user.getSignedToken(res); 
